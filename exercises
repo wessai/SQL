@@ -1,6 +1,7 @@
 Задача № 1
 Найдите максимальный возраст (колич. лет) среди обучающихся 10 классов ?
-Решение:```jsx
+Решение:
+```jsx
 SELECT FLOOR(MAX((DATEDIFF(NOW(), birthday) / 365))) AS max_year
 FROM Student
   JOIN Student_in_class ON Student.id = Student_in_class.student
