@@ -1,13 +1,11 @@
 Задача № 1
 Найдите максимальный возраст (колич. лет) среди обучающихся 10 классов ?
 Решение:
-```jsx
 SELECT FLOOR(MAX((DATEDIFF(NOW(), birthday) / 365))) AS max_year
 FROM Student
   JOIN Student_in_class ON Student.id = Student_in_class.student
   JOIN Class ON Class.id = Student_in_class.class
 WHERE Class.name LIKE '10%';
-```
 
 Задача № 2
 Вывести отсортированный по количеству перелетов (по убыванию) и имени (по возрастанию) список пассажиров, совершивших хотя бы 1 полет.
