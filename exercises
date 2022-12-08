@@ -1,3 +1,4 @@
+Задача № 1
 Найдите максимальный возраст (колич. лет) среди обучающихся 10 классов ?
 Решение:
 SELECT FLOOR(MAX((DATEDIFF(NOW(), birthday) / 365))) AS max_year
@@ -5,3 +6,129 @@ FROM Student
   JOIN Student_in_class ON Student.id = Student_in_class.student
   JOIN Class ON Class.id = Student_in_class.class
 WHERE Class.name LIKE '10%';
+
+
+Задача № 2
+Вывести отсортированный по количеству перелетов (по убыванию) и имени (по возрастанию) список пассажиров, совершивших хотя бы 1 полет.
+Решение:
+SELECT name, COUNT(*) AS count  
+FROM Passenger
+JOIN Pass_in_trip
+    ON Passenger.id=Pass_in_trip.passenger
+GROUP BY passenger
+HAVING COUNT(trip) > 0
+ORDER BY COUNT(trip) DESC, name;
+
+
+Задача № 3
+Определить, сколько потратил в 2005 году каждый из членов семьи.
+Решение:
+SELECT member_name,status,
+  SUM(unit_price * amount) AS costs
+FROM FamilyMembers,Payments
+WHERE member_id = family_member
+  and YEAR(date) = '2005'
+GROUP BY member_id
+
+
+Задача № 4
+Вывести отсортированный по количеству перелетов (по убыванию) и имени (по возрастанию) список пассажиров, совершивших хотя бы 1 полет.
+Решение:
+SELECT name, COUNT(*) AS count  
+FROM Passenger
+JOIN Pass_in_trip
+    ON Passenger.id=Pass_in_trip.passenger
+GROUP BY passenger
+HAVING COUNT(trip) > 0
+ORDER BY COUNT(trip) DESC, name;
+
+
+Задача №5
+Определить, кто из членов семьи покупал картошку
+Решение:
+SELECT DISTINCT status
+FROM FamilyMembers
+JOIN Payments
+    ON FamilyMembers.member_id=Payments.family_member
+JOIN Goods
+    ON  Payments.good=Goods.good_id
+WHERE good_name = 'potato';
+
+
+Задача № 6
+Вывести отсортированный по количеству перелетов (по убыванию) и имени (по возрастанию) список пассажиров, совершивших хотя бы 1 полет.
+Решение:
+SELECT status,member_name,
+  SUM(unit_price * amount) AS costs
+FROM FamilyMembers,
+  Goods,
+  Payments,
+  GoodTypes
+WHERE member_id = family_member
+  AND good_id = good
+  AND good_type_id = type
+  AND good_type_name = 'entertainment'
+GROUP BY status,
+  member_name
+
+
+Задача № 7
+Во сколько Стив Мартин (Steve Martin) прилетел в Лондон (London)
+Решение:
+SELECT time_in
+FROM Trip,
+  Passenger,
+  Pass_in_trip
+WHERE Pass_in_trip.trip = Trip.id
+  AND Pass_in_trip.passenger = Passenger.id
+  AND Passenger.name = 'Steve Martin'
+  AND Trip.town_to = 'London'
+  
+  
+Задача № 8
+Найдите самый дорогой деликатес (delicacies) и выведите его стоимость
+Решение:
+SELECT good_name,
+  unit_price
+FROM Payments,
+  Goods,
+  GoodTypes
+WHERE good_type_id = type
+  AND good_type_name = 'delicacies'
+  AND good_id = good
+  AND unit_price =(
+    SELECT MAX(unit_price)
+    FROM Payments,
+      Goods,
+      GoodTypes
+    WHERE good_id = good
+      AND good_type_id = type
+      AND good_type_name = 'delicacies'
+  )
+
+
+Задача № 9
+Какой(ие) кабинет(ы) пользуются самым большим спросом?
+Решение:
+SELECT Schedule.classroom
+FROM Schedule
+GROUP BY classroom
+HAVING COUNT(*) =(
+    SELECT MAX(count)
+    FROM (
+        SELECT COUNT(*) AS count
+        FROM Schedule
+        GROUP BY classroom
+      ) AS A
+  )
+ 
+ 
+Задача № 10
+В каких классах введет занятия преподаватель “Krauze” ?
+Решение:
+SELECT DISTINCT name
+FROM Schedule
+  JOIN Teacher
+  JOIN Class ON class = Class.id
+  AND teacher = Teacher.id
+WHERE Teacher.last_name = 'Krauze'
