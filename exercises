@@ -1,3 +1,4 @@
+'''
 Задача № 1
 Найдите максимальный возраст (колич. лет) среди обучающихся 10 классов ?
 Решение:
@@ -132,3 +133,4 @@ FROM Schedule
   JOIN Class ON class = Class.id
   AND teacher = Teacher.id
 WHERE Teacher.last_name = 'Krauze'
+'''
